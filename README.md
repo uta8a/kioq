@@ -22,6 +22,12 @@ CI でチェックする項目 (https://github.com/uta8a/kioq/tree/main/.github/
 - `yarn fmt` `yarn lint` で自動 fix する
 - コミットメッセージは commitlint に従う(`echo 'commit message' | yarn commitlint` で事前確認できる。git hooks に入れても良い)
 - `git push origin sub-branch`
+- pull_requestでcommitlintに怒られたとき
+
+```shell
+git commit --amend # commit messageを変更
+git push origin sub-branch --force-with-lease # force push
+```
 
 入れておくといいもの(VSCode 拡張)
 
