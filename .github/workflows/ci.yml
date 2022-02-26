@@ -1,0 +1,20 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      # cache automatically by using setup-node@v2
+      # https://github.com/actions/setup-node#caching-packages-dependencies
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: npm
+      - run: npm install
+      - run: npm run check-fmt
+      - run: npm run check-lint
+      - run: npm run test
+      - run: npm run commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
