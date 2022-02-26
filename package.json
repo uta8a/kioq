@@ -9,11 +9,11 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
-    "check-lint": "eslint './{**/,**/**/}*.ts{,x}'",
-    "check-lint-file": "DEBUG=eslint:* eslint './{**/,**/**/}*.ts{,x}' 2>&1 | grep -e Linting",
-    "lint": "eslint --fix './{**/,**/**/}*.ts{,x}'",
-    "check-fmt": "prettier {**/,**/**/}*.{js,json,ts,tsx,yml}",
-    "fmt": "prettier --write {**/,**/**/}*.{js,json,ts,tsx,yml}",
+    "check-lint": "eslint . --ignore-pattern node_modules/",
+    "check-lint-file": "DEBUG=eslint:* eslint . --ignore-pattern node_modules/ 2>&1 | grep -e Linting",
+    "lint": "eslint --fix . --ignore-pattern node_modules/",
+    "check-fmt": "prettier --ignore-unknown '{,!(node_modules)/**/}*'",
+    "fmt": "prettier --ignore-unknown --write '{,!(node_modules)/**/}*'",
     "commitlint": "commitlint -x @commitlint/config-conventional"
   },
   "dependencies": {
