@@ -4,6 +4,7 @@
   "author": "uta8a, Tksi",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,9 +15,11 @@
     "lint": "eslint --fix . --ignore-pattern node_modules/",
     "check-fmt": "prettier --ignore-unknown '{,!(node_modules)/**/}*'",
     "fmt": "prettier --ignore-unknown --write '{,!(node_modules)/**/}*'",
-    "commitlint": "commitlint -x @commitlint/config-conventional"
+    "commitlint": "commitlint -x @commitlint/config-conventional",
+    "ts-node": "node --loader ts-node/esm utils/getKioq.ts"
   },
   "dependencies": {
+    "@notionhq/client": "^1.0.0",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
@@ -39,6 +42,7 @@
     "jest": "^27.5.1",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",
+    "ts-node": "^10.5.0",
     "typescript": "4.5.5"
   }
 }
