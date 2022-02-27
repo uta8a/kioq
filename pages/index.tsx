@@ -53,25 +53,44 @@ const Index: NextPage<{ kioq: Kioq }> = ({ kioq }) => {
       <Head>
         <title>kioq</title>
       </Head>
-      <main>
-        <p>kioq - simple flash card use Notion.</p>
-        <select value={tag} onChange={tagChangeHandler}>
-          {Array.from(new Set(kioq.map((quiz) => quiz.tag))).map((tag) => {
-            return (
-              <option value={tag} key={tag}>
-                {tag}
-              </option>
-            );
-          })}
-        </select>
-        <div>
-          Quiz {kioq.filter((quiz) => quiz.tag === tag)[index]?.question}
-        </div>
+      <main className={style.main}>
+        <div className={style.container}>
+          <p className={style.title}>kioq</p>
+          <progress
+            className={style.progress}
+            value={index + 1}
+            max={kioq.filter((quiz) => quiz.tag === tag).length}
+          />
+          <select
+            className={style.select}
+            value={tag}
+            onChange={tagChangeHandler}
+          >
+            {Array.from(new Set(kioq.map((quiz) => quiz.tag))).map((tag) => {
+              return (
+                <option value={tag} key={tag}>
+                  {tag}
+                </option>
+              );
+            })}
+          </select>
+          <div>
+            <div className={style.quiz_title}>Quiz</div>
+            <div className={style.quiz}>
+              {kioq.filter((quiz) => quiz.tag === tag)[index]?.question}
+            </div>
+          </div>
 
-        <div className={isOpen ? '' : style.open}>
-          Ans {kioq.filter((quiz) => quiz.tag === tag)[index]?.answer}
+          <div>
+            <div className={style.answer_title}>Ans</div>
+            <div className={`${style.answer} ${isOpen ? '' : style.close}`}>
+              {kioq.filter((quiz) => quiz.tag === tag)[index]?.answer}
+            </div>
+          </div>
+          <button onClick={indexChangeHandler} className={style.button}>
+            {displayButtonMessage()}
+          </button>
         </div>
-        <button onClick={indexChangeHandler}>{displayButtonMessage()}</button>
       </main>
     </div>
   );
