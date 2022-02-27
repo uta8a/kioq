@@ -5,6 +5,7 @@ import type { GetServerSideProps } from 'next';
 import type { Kioq } from '@/types/kioq';
 import { useState } from 'react';
 import type { ChangeEventHandler, MouseEventHandler } from 'react';
+import style from 'styles/index.module.css';
 
 export const getServerSideProps: GetServerSideProps<{
   kioq: Kioq;
@@ -12,24 +13,39 @@ export const getServerSideProps: GetServerSideProps<{
   return { props: { kioq: await getKioq() } };
 };
 
-const Home: NextPage<{ kioq: Kioq }> = ({ kioq }) => {
+const Index: NextPage<{ kioq: Kioq }> = ({ kioq }) => {
   const [tag, setTag] = useState(kioq[0].tag);
   const [index, setIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+
   const tagChangeHandler: ChangeEventHandler<HTMLSelectElement> = (event) => {
     setTag(event.target.value);
     setIndex(0);
+    setIsOpen(false);
   };
+
   const indexChangeHandler: MouseEventHandler<HTMLButtonElement> = () => {
     if (!isOpen) {
       setIsOpen(true);
       return;
-    }
-    if (index + 1 >= kioq.filter((quiz) => quiz.tag === tag).length) {
-      // index over kioq length, end of quiz
     } else {
-      setIndex(index + 1);
+      setIsOpen(false);
+      if (index + 1 >= kioq.filter((quiz) => quiz.tag === tag).length) {
+        // index over kioq length, end of quiz
+        setIndex(0);
+        setIsOpen(false);
+      } else {
+        setIndex(index + 1);
+      }
     }
+  };
+
+  const displayButtonMessage = () => {
+    return isOpen
+      ? index + 1 >= kioq.filter((quiz) => quiz.tag === tag).length
+        ? 'もう一度'
+        : '次へ'
+      : '答え';
   };
 
   return (
@@ -52,11 +68,13 @@ const Home: NextPage<{ kioq: Kioq }> = ({ kioq }) => {
           Quiz {kioq.filter((quiz) => quiz.tag === tag)[index]?.question}
         </div>
 
-        <div>Ans {kioq.filter((quiz) => quiz.tag === tag)[index]?.answer}</div>
-        <button onClick={indexChangeHandler}>次へ</button>
+        <div className={isOpen ? '' : style.open}>
+          Ans {kioq.filter((quiz) => quiz.tag === tag)[index]?.answer}
+        </div>
+        <button onClick={indexChangeHandler}>{displayButtonMessage()}</button>
       </main>
     </div>
   );
 };
 
-export default Home;
+export default Index;
